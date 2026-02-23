@@ -1,166 +1,232 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bank Complaint Dashboard</title>
+    <title>Bank Complaint Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <style>
         body {
             margin: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Arial;
             background-color: #f4f6f9;
         }
 
-        /* NAVBAR */
-        nav {
-            background-color: #002b5c;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-
-        nav h2 {
-            margin: 0;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-            padding: 0;
-            margin: 0;
-        }
-
-        nav ul li {
-            cursor: pointer;
-        }
-
-        nav ul li:hover {
-            text-decoration: underline;
-        }
-
-        /* HEADER */
         header {
-            background: linear-gradient(to right, #003366, #0059b3);
+            background: linear-gradient(to right, #0b3c6d, #0052a3);
             color: white;
-            padding: 40px;
+            padding: 25px;
             text-align: center;
         }
 
-        /* CONTAINER */
+        nav {
+            background: #062a4d;
+            padding: 12px;
+            text-align: right;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+
         .container {
             padding: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
         }
 
-        /* CARDS */
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
         .card {
             background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: 0.3s;
+            padding: 20px;
+            flex: 1;
+            min-width: 220px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .card:hover {
-            transform: translateY(-5px);
+        h2 {
+            color: #0b3c6d;
         }
 
-        h3 {
-            margin-top: 0;
-            color: #003366;
+        input, select {
+            padding: 8px;
+            margin: 5px 10px 10px 0;
         }
 
-        /* BUTTON */
-        .btn {
-            background-color: #0059b3;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #0b3c6d;
             color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
         }
 
-        .btn:hover {
-            background-color: #003366;
+        tr:hover {
+            background-color: #f1f1f1;
         }
 
-        /* FOOTER */
         footer {
-            background-color: #002b5c;
+            background: #062a4d;
             color: white;
             text-align: center;
             padding: 15px;
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
-        /* CHART BAR */
-        .bar {
-            height: 12px;
-            background-color: #0059b3;
-            border-radius: 6px;
-            margin: 5px 0 15px 0;
-        }
+        .resolved { color: green; font-weight: bold; }
+        .pending { color: orange; font-weight: bold; }
+        .progress { color: blue; font-weight: bold; }
     </style>
 </head>
-
 <body>
 
-<!-- NAVIGATION -->
-<nav>
-    <h2>🏦 Bank Dashboard</h2>
-    <ul>
-        <li>Home</li>
-        <li>Products</li>
-        <li>States</li>
-        <li>Reports</li>
-        <li>Contact</li>
-    </ul>
-</nav>
-
-<!-- HEADER -->
 <header>
-    <h1>Bank Complaint Analysis Portal</h1>
-    <p>Monitor complaints, track performance & analyze trends</p>
+    <h1>🏦 Bank Complaint Management System</h1>
+    <p>Real-time Complaint Monitoring Dashboard</p>
 </header>
 
-<!-- CONTENT -->
+<nav>
+    <a href="#">Home</a>
+    <a href="#">Products</a>
+    <a href="#">States</a>
+    <a href="#">Categories</a>
+    <a href="#">Reports</a>
+</nav>
+
 <div class="container">
 
-    <div class="card">
-        <h3>Total Complaints</h3>
-        <h2>10,000+</h2>
-        <button class="btn">View Details</button>
+    <!-- Summary Cards -->
+    <div class="cards">
+        <div class="card">
+            <h3>Total Complaints</h3>
+            <h2 id="totalCount"></h2>
+        </div>
+
+        <div class="card">
+            <h3>Resolved</h3>
+            <h2 id="resolvedCount"></h2>
+        </div>
+
+        <div class="card">
+            <h3>Pending</h3>
+            <h2 id="pendingCount"></h2>
+        </div>
+
+        <div class="card">
+            <h3>In Progress</h3>
+            <h2 id="progressCount"></h2>
+        </div>
     </div>
 
-    <div class="card">
-        <h3>Top Product: Credit Card</h3>
-        <div class="bar" style="width:80%"></div>
-        <p>80% of complaints</p>
-    </div>
+    <!-- Filters -->
+    <h2>Filter Complaints</h2>
 
-    <div class="card">
-        <h3>Top State: California</h3>
-        <div class="bar" style="width:70%"></div>
-        <p>70% of complaints</p>
-    </div>
+    <input type="text" id="searchInput" placeholder="Search by Product or State..." onkeyup="filterTable()">
 
-    <div class="card">
-        <h3>Timely Response Rate</h3>
-        <div class="bar" style="width:85%"></div>
-        <p>85% cases resolved on time</p>
-    </div>
+    <select id="categoryFilter" onchange="filterTable()">
+        <option value="">All Categories</option>
+        <option value="Fraud">Fraud</option>
+        <option value="Billing">Billing</option>
+        <option value="Loan">Loan Processing</option>
+        <option value="Interest">Interest Issue</option>
+    </select>
+
+    <!-- Complaint Table -->
+    <h2>Complaint Details</h2>
+
+    <table id="complaintTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>State</th>
+                <th>Category</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
 </div>
 
-<!-- FOOTER -->
 <footer>
-    © 2026 Bank Complaint Analysis | Developed by Sahithya
+    © 2026 Bank Complaint System | Developed by Sahithya
 </footer>
+
+<script>
+const complaints = [
+    {id:1001, product:"Credit Card", state:"California", category:"Fraud", status:"Resolved"},
+    {id:1002, product:"Mortgage", state:"Texas", category:"Loan", status:"Pending"},
+    {id:1003, product:"Bank Account", state:"Florida", category:"Billing", status:"Resolved"},
+    {id:1004, product:"Personal Loan", state:"New York", category:"Interest", status:"In Progress"},
+    {id:1005, product:"Credit Card", state:"Illinois", category:"Fraud", status:"Pending"},
+    {id:1006, product:"Mortgage", state:"California", category:"Loan", status:"Resolved"},
+    {id:1007, product:"Bank Account", state:"Texas", category:"Billing", status:"In Progress"},
+    {id:1008, product:"Personal Loan", state:"Florida", category:"Interest", status:"Resolved"}
+];
+
+function loadTable(data){
+    const tbody = document.querySelector("#complaintTable tbody");
+    tbody.innerHTML = "";
+
+    data.forEach(c => {
+        const row = `
+            <tr>
+                <td>${c.id}</td>
+                <td>${c.product}</td>
+                <td>${c.state}</td>
+                <td>${c.category}</td>
+                <td class="${getStatusClass(c.status)}">${c.status}</td>
+            </tr>`;
+        tbody.innerHTML += row;
+    });
+
+    updateSummary(data);
+}
+
+function getStatusClass(status){
+    if(status === "Resolved") return "resolved";
+    if(status === "Pending") return "pending";
+    return "progress";
+}
+
+function updateSummary(data){
+    document.getElementById("totalCount").innerText = data.length;
+    document.getElementById("resolvedCount").innerText = data.filter(c=>c.status==="Resolved").length;
+    document.getElementById("pendingCount").innerText = data.filter(c=>c.status==="Pending").length;
+    document.getElementById("progressCount").innerText = data.filter(c=>c.status==="In Progress").length;
+}
+
+function filterTable(){
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const category = document.getElementById("categoryFilter").value;
+
+    const filtered = complaints.filter(c =>
+        (c.product.toLowerCase().includes(search) || c.state.toLowerCase().includes(search)) &&
+        (category === "" || c.category.includes(category))
+    );
+
+    loadTable(filtered);
+}
+
+loadTable(complaints);
+</script>
 
 </body>
 </html>
