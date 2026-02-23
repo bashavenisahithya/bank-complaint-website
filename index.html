@@ -7,156 +7,158 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Segoe UI', Arial;
-            background-color: #f4f6f9;
+            font-family: Arial;
+            background: #f4f6f9;
         }
 
         header {
-            background: linear-gradient(to right, #0b3c6d, #0052a3);
+            background: #0b3c6d;
             color: white;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
         }
 
-        nav {
-            background: #062a4d;
-            padding: 12px;
-            text-align: right;
-        }
-
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-        }
-
         .container {
-            padding: 30px;
-        }
-
-        .cards {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: white;
             padding: 20px;
-            flex: 1;
-            min-width: 220px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         h2 {
             color: #0b3c6d;
         }
 
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+            gap: 10px;
+        }
+
         input, select {
             padding: 8px;
-            margin: 5px 10px 10px 0;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px;
+            background: #0b3c6d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #062a4d;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow-x: auto;
+            display: block;
         }
 
         th, td {
-            padding: 12px;
+            padding: 8px;
             border-bottom: 1px solid #ddd;
-            text-align: left;
+            font-size: 12px;
         }
 
         th {
             background: #0b3c6d;
             color: white;
+            position: sticky;
+            top: 0;
         }
 
-        tr:hover {
-            background-color: #f1f1f1;
+        .dashboard {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
-        footer {
-            background: #062a4d;
-            color: white;
-            text-align: center;
+        .card {
+            background: white;
             padding: 15px;
-            margin-top: 30px;
+            flex: 1;
+            min-width: 150px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-
-        .resolved { color: green; font-weight: bold; }
-        .pending { color: orange; font-weight: bold; }
-        .progress { color: blue; font-weight: bold; }
     </style>
 </head>
+
 <body>
 
 <header>
     <h1>🏦 Bank Complaint Management System</h1>
-    <p>Real-time Complaint Monitoring Dashboard</p>
 </header>
-
-<nav>
-    <a href="#">Home</a>
-    <a href="#">Products</a>
-    <a href="#">States</a>
-    <a href="#">Categories</a>
-    <a href="#">Reports</a>
-</nav>
 
 <div class="container">
 
-    <!-- Summary Cards -->
-    <div class="cards">
-        <div class="card">
-            <h3>Total Complaints</h3>
-            <h2 id="totalCount"></h2>
-        </div>
-
-        <div class="card">
-            <h3>Resolved</h3>
-            <h2 id="resolvedCount"></h2>
-        </div>
-
-        <div class="card">
-            <h3>Pending</h3>
-            <h2 id="pendingCount"></h2>
-        </div>
-
-        <div class="card">
-            <h3>In Progress</h3>
-            <h2 id="progressCount"></h2>
-        </div>
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <div class="card">Total Complaints: <b id="totalCount">0</b></div>
+        <div class="card">Resolved: <b id="resolvedCount">0</b></div>
+        <div class="card">In Progress: <b id="progressCount">0</b></div>
     </div>
 
-    <!-- Filters -->
-    <h2>Filter Complaints</h2>
+    <!-- Complaint Form -->
+    <div class="form-section">
+        <h2>Submit Complaint</h2>
 
-    <input type="text" id="searchInput" placeholder="Search by Product or State..." onkeyup="filterTable()">
+        <div class="form-grid">
+            <input type="date" id="date_received" placeholder="Date received">
+            <input type="text" id="product" placeholder="Product">
+            <input type="text" id="sub_product" placeholder="Sub-product">
+            <input type="text" id="issue" placeholder="Issue">
+            <input type="text" id="sub_issue" placeholder="Sub-issue">
+            <input type="text" id="company" placeholder="Company">
+            <input type="text" id="state" placeholder="State">
+            <input type="text" id="zip" placeholder="ZIP Code">
+            <input type="text" id="tags" placeholder="Tags">
+            <select id="submitted_via">
+                <option value="Web">Web</option>
+                <option value="Referral">Referral</option>
+                <option value="Phone">Phone</option>
+                <option value="Postal mail">Postal Mail</option>
+            </select>
+            <select id="status">
+                <option value="In progress">In progress</option>
+                <option value="Closed">Closed</option>
+                <option value="Closed with explanation">Closed with explanation</option>
+            </select>
+        </div>
 
-    <select id="categoryFilter" onchange="filterTable()">
-        <option value="">All Categories</option>
-        <option value="Fraud">Fraud</option>
-        <option value="Billing">Billing</option>
-        <option value="Loan">Loan Processing</option>
-        <option value="Interest">Interest Issue</option>
-    </select>
+        <button onclick="addComplaint()">Add Complaint</button>
+    </div>
 
     <!-- Complaint Table -->
-    <h2>Complaint Details</h2>
+    <h2>Complaint Records</h2>
 
     <table id="complaintTable">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>Date</th>
                 <th>Product</th>
+                <th>Sub-product</th>
+                <th>Issue</th>
+                <th>Sub-issue</th>
+                <th>Company</th>
                 <th>State</th>
-                <th>Category</th>
+                <th>ZIP</th>
+                <th>Tags</th>
+                <th>Submitted Via</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -165,67 +167,64 @@
 
 </div>
 
-<footer>
-    © 2026 Bank Complaint System | Developed by Sahithya
-</footer>
-
 <script>
-const complaints = [
-    {id:1001, product:"Credit Card", state:"California", category:"Fraud", status:"Resolved"},
-    {id:1002, product:"Mortgage", state:"Texas", category:"Loan", status:"Pending"},
-    {id:1003, product:"Bank Account", state:"Florida", category:"Billing", status:"Resolved"},
-    {id:1004, product:"Personal Loan", state:"New York", category:"Interest", status:"In Progress"},
-    {id:1005, product:"Credit Card", state:"Illinois", category:"Fraud", status:"Pending"},
-    {id:1006, product:"Mortgage", state:"California", category:"Loan", status:"Resolved"},
-    {id:1007, product:"Bank Account", state:"Texas", category:"Billing", status:"In Progress"},
-    {id:1008, product:"Personal Loan", state:"Florida", category:"Interest", status:"Resolved"}
-];
 
-function loadTable(data){
+let complaints = [];
+
+function addComplaint() {
+
+    const complaint = {
+        date: document.getElementById("date_received").value,
+        product: document.getElementById("product").value,
+        sub_product: document.getElementById("sub_product").value,
+        issue: document.getElementById("issue").value,
+        sub_issue: document.getElementById("sub_issue").value,
+        company: document.getElementById("company").value,
+        state: document.getElementById("state").value,
+        zip: document.getElementById("zip").value,
+        tags: document.getElementById("tags").value,
+        submitted_via: document.getElementById("submitted_via").value,
+        status: document.getElementById("status").value
+    };
+
+    complaints.push(complaint);
+    renderTable();
+    updateDashboard();
+}
+
+function renderTable() {
+
     const tbody = document.querySelector("#complaintTable tbody");
     tbody.innerHTML = "";
 
-    data.forEach(c => {
+    complaints.forEach(c => {
         const row = `
             <tr>
-                <td>${c.id}</td>
+                <td>${c.date}</td>
                 <td>${c.product}</td>
+                <td>${c.sub_product}</td>
+                <td>${c.issue}</td>
+                <td>${c.sub_issue}</td>
+                <td>${c.company}</td>
                 <td>${c.state}</td>
-                <td>${c.category}</td>
-                <td class="${getStatusClass(c.status)}">${c.status}</td>
-            </tr>`;
+                <td>${c.zip}</td>
+                <td>${c.tags}</td>
+                <td>${c.submitted_via}</td>
+                <td>${c.status}</td>
+            </tr>
+        `;
         tbody.innerHTML += row;
     });
-
-    updateSummary(data);
 }
 
-function getStatusClass(status){
-    if(status === "Resolved") return "resolved";
-    if(status === "Pending") return "pending";
-    return "progress";
+function updateDashboard() {
+    document.getElementById("totalCount").innerText = complaints.length;
+    document.getElementById("resolvedCount").innerText =
+        complaints.filter(c => c.status.includes("Closed")).length;
+    document.getElementById("progressCount").innerText =
+        complaints.filter(c => c.status === "In progress").length;
 }
 
-function updateSummary(data){
-    document.getElementById("totalCount").innerText = data.length;
-    document.getElementById("resolvedCount").innerText = data.filter(c=>c.status==="Resolved").length;
-    document.getElementById("pendingCount").innerText = data.filter(c=>c.status==="Pending").length;
-    document.getElementById("progressCount").innerText = data.filter(c=>c.status==="In Progress").length;
-}
-
-function filterTable(){
-    const search = document.getElementById("searchInput").value.toLowerCase();
-    const category = document.getElementById("categoryFilter").value;
-
-    const filtered = complaints.filter(c =>
-        (c.product.toLowerCase().includes(search) || c.state.toLowerCase().includes(search)) &&
-        (category === "" || c.category.includes(category))
-    );
-
-    loadTable(filtered);
-}
-
-loadTable(complaints);
 </script>
 
 </body>
